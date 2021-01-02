@@ -1,5 +1,5 @@
 # Master-Project-Advance-Blackjack
-this was my final project in my course Python two from a company named "Juni Learning"
+**this was my final project in my course Python two from a company named "Juni Learning"**
 
 this is game that uses numbers and cards names to play the game Blackjack. 
 it first gives you two numbers to start off and you as the user get to decide if you would like to hit (adding another card to your deck) or stay (leaving your cards alone). 
