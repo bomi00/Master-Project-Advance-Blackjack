@@ -1,0 +1,114 @@
+import random
+import time 
+
+
+input('"Welcome to the game of Blackjack! In this game, you will be dealt two cards to start. Your goal is to get as close to 21 as possible without going over - or busting! In this simple version of Blackjack, we only use the cards 2 through 11 (Ace).\n\nThe dealer will first ask you to hit (take another card) or stay. As long as you do not bust, once you decide to stay, the dealer will then play his hand. The dealer always has to hit until his hand is at least 17. Whoever has the better hand at the end wins!\n\nPress Enter to start playing.\n')
+properNames = {1: 'Ace', 11 : 'Jack', 12: 'Queen', 13: 'King'}
+#this function gives the upper numbers their proper name with their proper value
+def printHand(hand):
+  x = []
+  for y in hand: 
+    if y == 1 or y > 10:
+      x.append(properNames[y])
+    else:
+      x.append(y)
+  return x
+#this function calculates the number of aces and what values they could be for the player of the dealer
+def calcHandValues(hand):
+  y = []
+  sum = 0 
+  numberofAces = 0
+  for x in hand:
+    if x == 1:
+      numberofAces += 1 
+      sum +=1
+    if x > 10:
+      sum+= 10
+    else:
+      sum += x
+  y.append(sum)
+  for i in range(numberofAces):
+    sum +=10
+    y.append(sum)
+  return y 
+#this function picks the best answer between each ace for the right amount
+def getFinalValue(hand):
+  finalValue = 0
+  handValues = calcHandValues(hand)
+  for x in handValues:
+    if x<= 21:
+      finalValue = x
+  return finalValue
+
+while True:
+  time.sleep(2)
+  #this added 2 cards to the player games
+  player = []
+  for i in range(2):
+    player.append(random.randint(1,13))
+  print('Here is your hand')
+  print(printHand(player))
+  #this asks if the game is true, if true the game continues and also gives a command if the sum of the players card doesn equal to 21 the win the game
+  continueGame = True 
+  if 21 in calcHandValues(player) :
+    print ('You won the game!')
+    continueGame = False
+  if continueGame == True:
+    while True:
+      #this asks if the player wants to hit or stay
+      game = input('Type in H to Hit or S to stay:')
+      while game != 'S' and game != 'H':
+        print ('You did not type in S or H')
+        game = input('Type in H to or S to stay:')
+      if game == 'H':
+        #this asks if the player wants to add a card to the sum so their sum could equal 21
+        player.append(random.randint(1,13))
+        print ('Here is your hand')
+        print (printHand(player))
+        if 21 in calcHandValues(player):
+          print ('You won the game!')
+          continueGame = False
+          break
+        elif min(calcHandValues(player)) > 21:
+          #if the player sum is greater than 21 than they've busted or lost the game
+          print ('You busted!')
+          continueGame = False
+          break
+      if game == 'S':
+        #this passes it over to the dealer
+        print ('Dealer turn')
+        break
+    if continueGame == True:
+      dealer = []
+      for i in range(2):
+        #this generates 2 numbers for the dealer so the can play the game
+        dealer.append(random.randint(1,13))
+      print ('Here is the dealer hand')
+      print (printHand(dealer))
+      while True:
+        time.sleep(1)
+        while min(calcHandValues(dealer)) < 17:
+          #this asks if the sum of the dealer cards are greater than 17 they should stop hitting
+          dealer.append(random.randint(1,13))
+          print ('Here is the dealer hand')
+          print (printHand(dealer))
+          if 21 in calcHandValues(dealer):
+            #this says if the dealer's sum is equal to 21 and the player isn't than they have won the game
+            print ('the dealer won!')
+            break
+          elif min(calcHandValues(dealer)) > 21:
+            #this says if the dealer's sum is greater than 21 than they have busted
+            print ('the dealer busted you win!')
+            break
+        if getFinalValue(player) == getFinalValue(dealer):
+          #this says if both the dealer and the player have the same sum amount than they tied
+          print ('You both had the same number')
+          break
+        if getFinalValue(player) < getFinalValue(dealer):
+          #this says if the player sum is less than the dealer than the player won
+          print ('You won!')
+          break
+        if getFinalValue(dealer) < getFinalValue(player):
+          #this says of the dealer sum is less than the player's than the dealer won
+          print ('The dealer won!')  
+          break
